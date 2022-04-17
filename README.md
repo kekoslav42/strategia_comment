@@ -100,7 +100,7 @@ api/v1/comments/(?P<pk>[^/.]+)/ # Получение информации о в�
 
 ```bash
 SECRET_KEY = Секретный ключ django
-ALLOWED_HOSTS = Разрешенные подключения
+
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=postgres
 POSTGRES_USER= Пользователь базы данных
