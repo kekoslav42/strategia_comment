@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from api.serializers import PostSerializer, CommentSerializer
-from post.models import Post, Comment
+from api.serializers import CommentSerializer, PostSerializer
+from post.models import Comment, Post
 
 
 class PostViewSet(viewsets.ModelViewSet):

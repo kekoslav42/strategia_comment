@@ -1,9 +1,8 @@
+from django.conf import settings
 from mptt.templatetags.mptt_tags import cache_tree_children
 from rest_framework import serializers
-from django.conf import settings
 
-from post.models import Post, Comment
-
+from post.models import Comment, Post
 
 class CommentSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField('get_children')
