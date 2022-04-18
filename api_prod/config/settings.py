@@ -8,7 +8,7 @@ if not SECRET_KEY:
     raise Exception('SECRET_KEY is NONE')
 
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
