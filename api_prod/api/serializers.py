@@ -4,6 +4,12 @@ from rest_framework import serializers
 
 from post.models import Comment, Post
 
+class CommentReadySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        exclude = ('lft', 'rght', 'tree_id')
+        read_only_fields = ('comments',)
+
 class CommentSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField('get_children')
 
@@ -21,7 +27,6 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         exclude = ('lft', 'rght', 'tree_id')
         read_only_fields = ('comments',)
-
 
 class PostSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField('get_comments')
