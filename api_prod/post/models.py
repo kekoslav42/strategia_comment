@@ -21,6 +21,9 @@ class Post(models.Model):
     )
     published = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.author} - {self.title}: {self.text}'
+
 
 class Comment(MPTTModel):
     parent = TreeForeignKey(

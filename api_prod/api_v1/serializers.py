@@ -4,16 +4,12 @@ from rest_framework import serializers
 
 from post.models import Comment, Post
 
-class CommentReadySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        exclude = ('lft', 'rght', 'tree_id')
-        read_only_fields = ('comments',)
 
 class CommentSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField('get_children')
 
     def get_children(self, comment):
+        """ Рекурсивно достаем детей у комментария"""
         max_level = settings.MAX_LEVEL
         children = comment.get_children()
         if all([max_level is not None, comment.get_level() >= max_level]):
@@ -28,10 +24,16 @@ class CommentSerializer(serializers.ModelSerializer):
         exclude = ('lft', 'rght', 'tree_id')
         read_only_fields = ('comments',)
 
+
 class PostSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField('get_comments')
 
     def get_comments(self, post):
+        """
+        Получаем комментарии к посту
+        (Плохой способ потому что вызывает лишние запросы
+        т.е к каждому посту делает запрос на получение комментариев)
+        """
         comments = cache_tree_children(
             Comment.objects.filter(
                 post=post,
@@ -42,6 +44,7 @@ class PostSerializer(serializers.ModelSerializer):
             comments,
             many=True
         )
+
         return serializer.data
 
     class Meta:

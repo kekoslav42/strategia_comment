@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: COMMENT API
+  description: >-
+    API по добавлению комментариев к посту с возможной вложенностью
+  version: '2'
+servers:
+  - url: /
+paths:
+  /api/v2/posts/:
+    get:
+      summary: Получение всех постов
+      responses:
+        '200':
+          description: Получение всех постов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posts'
+    post:
+      summary: Добавление поста
+      requestBody:
+        description: Добавляет пост с переданными параметрами
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPosts'
+      responses:
+        '201':
+          description: post created
+        '400':
+          description: validation error
+  /api/v2/posts/{post_id}/:
+    get:
+      summary: Получение информации об одном посте
+      parameters:
+      - name: post_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Информация о посте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posts'
+        '404':
+          description: Not found
+  /api/v2/comments/:
+    get:
+      summary: Получение всех комментариев
+      responses:
+        '200':
+          description: Комментарии возращаются сразу в виде дерева
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+    post:
+      summary: Добавление комментария
+      requestBody:
+        description: Добавляет комментарий с переданными данными
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComment'
+      responses:
+        '201':
+          description: comment created
+        '400':
+          description: validation error
+
+  /api/v2/comments/{post_id}:
+    get:
+      summary: Получает все комментарии к выбранному посту
+      parameters:
+      - name: post_id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Получение комментариев к посту
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '404':
+          description: Not found
+components:
+  schemas:
+    Posts:
+      required:
+        - text
+      type: object
+      properties:
+        id:
+          type: number
+        comment_count:
+          type: number
+        author:
+          type: string
+        title:
+          type: string
+        text:
+          type: string
+        published:
+          type: string
+          format: date-time
+          example: "2022-04-23T17:06:33.252921Z"
+    NewPosts:
+      required:
+        - text
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        text:
+          type: string
+    Comment:
+      type: object
+      properties:
+        post:
+          type: number
+        parent:
+          type: number
+        level:
+          type: integer
+        author:
+          type: string
+        text:
+          type: string
+        published:
+          type: string
+          format: date-time
+          example: "2022-04-23T17:09:35.143599Z"
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+    NewComment:
+      required:
+        - post
+      type: object
+      properties:
+        post:
+          type: number
+        parent:
+          type: number
+        author:
+          type: string
+        title:
+          type: string
