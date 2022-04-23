@@ -7,7 +7,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-&+2o@!9or9x=!
 if not SECRET_KEY:
     raise Exception('SECRET_KEY is NONE')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '*'
