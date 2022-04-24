@@ -23,7 +23,9 @@ api/v2/comments/(?P<pk>[^/.]+)/ # Получение информации о к�
 # Документация
 
 ### Описана на swagger находится в папке docs в файле docs.yml
-
+```bash
+https://app.swaggerhub.com/apis/kekoslav42/comment_api/2
+```
 ## Установка
 1. Установка docker и docker-compose
 
